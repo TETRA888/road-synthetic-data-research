@@ -16,9 +16,69 @@ This research project explores the implementation of advanced AI techniques and 
 - **Hardware:** Profilometer Systems, Heavy Vehicle Simulator (HVS)
 - **Data Processing:** Python, C++
 
-## 📊 Implementation Details
+## 📊 Technical Architecture & Implementation
+
+### System Architecture
+![image](https://github.com/user-attachments/assets/2ea3af0c-e838-4e11-b48f-d15c8fa6127c)
+
+### Data Pipeline Workflow
+![image](https://github.com/user-attachments/assets/2ae8e9a7-1d7e-4e57-bf1e-2dca818cec42)
+
+### Technical Implementation Details
 
 ### 1. Data Collection System
+
+#### Hardware Specifications
+- **Profilometer System**
+  - Accuracy: ±0.1mm
+  - Scan width: 4m
+  - Sampling rate: 128kHz
+  - Class 3B laser system integration
+
+- **Drone System (Mavic 3E)**
+  - 4/3 CMOS sensor
+  - 20MP camera
+  - RTK positioning
+  - Time-synchronized data collection
+
+- **LiDAR System**
+  - Point cloud density: >100 points/m²
+  - Range accuracy: ±3mm
+  - Scan rate: 100Hz
+  - Multi-return capability
+
+#### Data Collection Protocols
+```python
+# Example data collection configuration
+config = {
+    'profilometer': {
+        'sampling_rate': 128000,
+        'scan_width': 4000,
+        'accuracy': 0.1,
+        'laser_power': 0.5
+    },
+    'lidar': {
+        'point_density': 100,
+        'scan_rate': 100,
+        'returns': 'multiple',
+        'min_intensity': 0.15
+    },
+    'drone': {
+        'altitude': 50,
+        'overlap': 0.75,
+        'speed': 5,
+        'rtk_mode': 'fixed'
+    }
+}
+
+# Data synchronization example
+def sync_sensor_data(profilometer_data, lidar_data, drone_data):
+    """
+    Synchronizes data from multiple sensors using timestamp alignment
+    and spatial correlation.
+    """
+    # Implementation details...
+    pass
 Current implementation utilizes multiple data sources:
 - High-precision laser scanning (±0.1mm accuracy)
 - Drone-based aerial imagery
@@ -27,6 +87,69 @@ Current implementation utilizes multiple data sources:
 - Inertial profiler measurements
 
 ### 2. Synthetic Data Generation Pipeline
+
+#### OpenUSD Implementation
+```python
+from pxr import Usd, UsdGeom, Sdf, UsdShade
+import numpy as np
+
+class RoadSurfaceGenerator:
+    def __init__(self, stage_path):
+        self.stage = Usd.Stage.CreateNew(stage_path)
+        self.setup_scene()
+    
+    def setup_scene(self):
+        """Initialize the basic scene setup"""
+        self.root = UsdGeom.Xform.Define(self.stage, "/Road")
+        self.surface = UsdGeom.Mesh.Define(self.stage, "/Road/Surface")
+        
+    def generate_wear_pattern(self, pattern_type, severity):
+        """Generate synthetic wear patterns"""
+        if pattern_type == "pothole":
+            return self._generate_pothole(severity)
+        elif pattern_type == "cracking":
+            return self._generate_cracking(severity)
+        # Add more pattern types...
+    
+    def apply_environmental_factors(self, temperature, rainfall, traffic_load):
+        """Apply environmental effects to the road surface"""
+        # Implementation details...
+        pass
+
+    def export_training_data(self):
+        """Export generated data for ML training"""
+        # Implementation details...
+        pass
+
+# Usage example
+generator = RoadSurfaceGenerator("road_condition.usda")
+generator.generate_wear_pattern("pothole", severity=0.7)
+generator.apply_environmental_factors(temp=35, rainfall=50, traffic_load=10000)
+```
+
+#### Data Augmentation Techniques
+```python
+def augment_road_data(base_data):
+    """
+    Augment road surface data with various transformations
+    and environmental conditions
+    """
+    augmented_data = []
+    
+    # Apply various augmentation techniques
+    for data in base_data:
+        # Add noise to simulate sensor variations
+        noisy_data = add_sensor_noise(data)
+        
+        # Simulate different lighting conditions
+        lighting_variations = apply_lighting_conditions(data)
+        
+        # Add weather effects
+        weather_variations = apply_weather_effects(data)
+        
+        augmented_data.extend([noisy_data, lighting_variations, weather_variations])
+    
+    return augmented_data
 ```python
 # Example OpenUSD setup for road condition simulation
 from pxr import Usd, UsdGeom, Sdf
