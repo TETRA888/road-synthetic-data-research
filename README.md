@@ -167,7 +167,7 @@ material = UsdShade.Material.Define(stage, "/Road/Surface/Material")
 ### 3. Model Training Architecture
 The system combines:
 - Real-world data from California's road network
-- Synthetically generated edge cases
+- Synthetically generated edge cases that can be made my analyzing real world edge cases and creating multiple different and similar instances
 - Historical wear patterns
 - Environmental factors
 
